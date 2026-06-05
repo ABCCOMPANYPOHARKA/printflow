@@ -17,12 +17,20 @@ function App() {
 
   // API URL State
   const getDefaultApiUrl = () => {
-    const stored = localStorage.getItem('printflowApiUrl');
+    const hostname = window.location.hostname;
+    const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
+    
+    let stored = localStorage.getItem('printflowApiUrl');
+    
+    // If we are NOT on localhost, but the stored URL points to localhost, ignore it
+    // because that means it was incorrectly cached on the mobile device.
+    if (!isLocalhost && stored && (stored.includes('localhost') || stored.includes('127.0.0.1'))) {
+      stored = null; 
+    }
+
     if (stored) return stored;
     
-    // If accessed via local network IP, point to that IP instead of localhost
-    const hostname = window.location.hostname;
-    if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    if (!isLocalhost && hostname) {
       return `http://${hostname}:3001`;
     }
     return 'http://localhost:3001';
