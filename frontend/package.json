@@ -14,7 +14,8 @@
     "filerobot-image-editor": "^5.0.0-beta.159",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-filerobot-image-editor": "^5.0.0-beta.159"
+    "react-filerobot-image-editor": "^5.0.0-beta.159",
+    "styled-components": "^6.4.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
