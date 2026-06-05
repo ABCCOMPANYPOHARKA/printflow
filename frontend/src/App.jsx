@@ -15,8 +15,20 @@ function App() {
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
 
-  // API URL State for Ngrok
-  const [apiUrl, setApiUrl] = useState(() => localStorage.getItem('printflowApiUrl') || 'http://localhost:3001');
+  // API URL State
+  const getDefaultApiUrl = () => {
+    const stored = localStorage.getItem('printflowApiUrl');
+    if (stored) return stored;
+    
+    // If accessed via local network IP, point to that IP instead of localhost
+    const hostname = window.location.hostname;
+    if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
+      return `http://${hostname}:3001`;
+    }
+    return 'http://localhost:3001';
+  };
+
+  const [apiUrl, setApiUrl] = useState(getDefaultApiUrl);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {
