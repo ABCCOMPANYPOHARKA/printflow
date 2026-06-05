@@ -35,8 +35,12 @@ function App() {
             formData.append('colorMode', colorMode);
             formData.append('printerId', selectedPrinter);
             
-            const response = await axios.post(`${apiUrl}/api/print`, formData, {
-              headers: { 'Content-Type': 'multipart/form-data' }
+            const cleanUrl = apiUrl.replace(/\/$/, '');
+            const response = await axios.post(`${cleanUrl}/api/print`, formData, {
+              headers: { 
+                'Content-Type': 'multipart/form-data',
+                'ngrok-skip-browser-warning': 'true'
+              }
             });
             if (response.data.success) {
               alert('PDF print job sent successfully!');
@@ -131,7 +135,12 @@ function App() {
   useEffect(() => {
     const fetchPrinters = async () => {
       try {
-        const res = await axios.get(`${apiUrl}/api/printers`);
+        const cleanUrl = apiUrl.replace(/\/$/, '');
+        const res = await axios.get(`${cleanUrl}/api/printers`, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true'
+          }
+        });
         if (res.data.success) {
           setPrinters(res.data.printers);
         }
@@ -141,6 +150,22 @@ function App() {
     };
     fetchPrinters();
   }, [apiUrl]);
+
+  const testConnection = async () => {
+    try {
+      const cleanUrl = apiUrl.replace(/\/$/, '');
+      const res = await axios.get(`${cleanUrl}/api/printers`, {
+        headers: { 'ngrok-skip-browser-warning': 'true' }
+      });
+      if (res.data.success) {
+        alert('✅ Connection Successful! Found ' + res.data.printers.length + ' printers.');
+      } else {
+        alert('❌ Connected, but received an error from backend.');
+      }
+    } catch (err) {
+      alert('❌ Connection Failed!\n\nError: ' + err.message + '\n\nPlease check:\n1. Backend is running on your PC.\n2. Ngrok is running and the URL is correct.\n3. The URL must start with https://');
+    }
+  };
 
   const handlePrint = async (editedImageObject) => {
     setIsPrinting(true);
@@ -153,9 +178,11 @@ function App() {
       formData.append('colorMode', colorMode);
       formData.append('printerId', selectedPrinter);
 
-      const response = await axios.post(`${apiUrl}/api/print`, formData, {
+      const cleanUrl = apiUrl.replace(/\/$/, '');
+      const response = await axios.post(`${cleanUrl}/api/print`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          'ngrok-skip-browser-warning': 'true'
         }
       });
 
@@ -165,8 +192,8 @@ function App() {
         alert('Failed to send print job: ' + response.data.error);
       }
     } catch (error) {
-      console.error('Print error:', error);
-      alert('Error printing image. Make sure the backend server is running on port 3001.');
+      console.error('Error printing document:', error);
+      alert(`Error printing image. Make sure the backend server is running.\n\nDetails: ${error.message}`);
     } finally {
       setIsPrinting(false);
       setIsEditorOpen(false);
@@ -215,6 +242,12 @@ function App() {
                   onChange={(e) => setApiUrl(e.target.value)}
                   style={{ padding: '0.5rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)', background: 'var(--bg-color)', color: 'white', width: '300px' }}
                 />
+                <button 
+                  onClick={testConnection}
+                  style={{ marginTop: '0.5rem', padding: '0.5rem 1rem', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}
+                >
+                  Test Connection
+                </button>
               </div>
             )}
           </div>
