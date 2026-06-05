@@ -158,6 +158,7 @@ function App() {
         headers: { 'ngrok-skip-browser-warning': 'true' }
       });
       if (res.data.success) {
+        setPrinters(res.data.printers);
         alert('✅ Connection Successful! Found ' + res.data.printers.length + ' printers.');
       } else {
         alert('❌ Connected, but received an error from backend.');
@@ -288,9 +289,11 @@ function App() {
                 className="select-dropdown"
               >
                 <option value="default">Default Printer</option>
-                {printers.map((p, i) => (
-                  <option key={i} value={p.deviceId || p.name || p}>{p.name || p}</option>
-                ))}
+                {printers.map((p, i) => {
+                  const name = p?.name || p?.deviceId || (typeof p === 'string' ? p : 'Unknown');
+                  const val = p?.deviceId || p?.name || (typeof p === 'string' ? p : 'unknown');
+                  return <option key={i} value={val}>{name}</option>;
+                })}
               </select>
             </div>
           </div>
