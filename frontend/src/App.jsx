@@ -30,10 +30,18 @@ function App() {
 
     if (stored) return stored;
     
-    if (!isLocalhost && hostname) {
+    // If accessed via local network IP (e.g., 192.168.x.x)
+    if (!isLocalhost && /^[0-9.]+$/.test(hostname)) {
       return `http://${hostname}:3001`;
     }
-    return 'http://localhost:3001';
+
+    if (isLocalhost) {
+      return 'http://localhost:3001';
+    }
+    
+    // If hosted on a public domain like Netlify, we can't guess the local backend URL.
+    // Return empty so the user configures it via settings.
+    return '';
   };
 
   const [apiUrl, setApiUrl] = useState(getDefaultApiUrl);
