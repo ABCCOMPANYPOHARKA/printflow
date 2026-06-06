@@ -7,7 +7,16 @@ const { printImage, printRawPdf, getAvailablePrinters } = require('./printer');
 const app = express();
 const port = 3001;
 
-app.use(cors());
+// Allow all origins and headers, specifically for ngrok
+const corsOptions = {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'],
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Handle preflight requests for all routes
+
 app.use(express.json({ limit: '50mb' }));
 
 // Setup multer for temporary file uploads

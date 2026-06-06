@@ -21,11 +21,6 @@ function App() {
     const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
     
     let stored = localStorage.getItem('printflowApiUrl');
-
-    if (stored === 'http://dreamy-cannoli-5d5938.netlify.app:3001') {
-      stored = 'http://192.168.161.113:5173/';
-      localStorage.setItem('printflowApiUrl', stored);
-    }
     
     // If we are NOT on localhost, but the stored URL points to localhost, ignore it
     // because that means it was incorrectly cached on the mobile device.
@@ -45,8 +40,8 @@ function App() {
     }
     
     // If hosted on a public domain like Netlify, we can't guess the local backend URL.
-    // Return the default local network IP so the user doesn't have to configure it manually.
-    return 'http://192.168.161.113:5173/';
+    // Return empty so the user configures it via settings.
+    return '';
   };
 
   const [apiUrl, setApiUrl] = useState(getDefaultApiUrl);
@@ -273,7 +268,13 @@ function App() {
                 <input 
                   type="text" 
                   value={apiUrl}
-                  onChange={(e) => setApiUrl(e.target.value)}
+                  onChange={(e) => {
+                    let val = e.target.value.trim();
+                    if (val && !val.startsWith('http://') && !val.startsWith('https://')) {
+                      val = 'https://' + val;
+                    }
+                    setApiUrl(val);
+                  }}
                   style={{ padding: '0.5rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)', background: 'var(--bg-color)', color: 'white', width: '300px' }}
                 />
                 <button 
