@@ -2,12 +2,14 @@
 
 :root {
   --bg-color: #0f172a;
-  --panel-bg: #1e293b;
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
+  --panel-bg: rgba(30, 41, 59, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --primary: #8b5cf6;
+  --primary-hover: #7c3aed;
   --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --border-color: #334155;
+  --text-muted: #cbd5e1;
+  --border-color: rgba(255, 255, 255, 0.15);
 }
 
 * {
@@ -18,7 +20,12 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: var(--bg-color);
+  background-color: #0f172a;
+  /* Rich animated-like gradient background */
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.15), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15), transparent 25%);
+  background-attachment: fixed;
   color: var(--text-main);
   min-height: 100vh;
   display: flex;
@@ -33,6 +40,39 @@ body {
   min-height: 100vh;
   padding: 2rem;
   width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Add a beautiful ambient blur element in the background */
+.app-container::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 40vw;
+  height: 40vw;
+  background: linear-gradient(135deg, #60a5fa, #c084fc);
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  z-index: -1;
+  animation: pulseFloat 10s infinite alternate;
+}
+
+.app-container::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  right: -10%;
+  width: 40vw;
+  height: 40vw;
+  background: linear-gradient(135deg, #f43f5e, #8b5cf6);
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  z-index: -1;
+  animation: pulseFloat 12s infinite alternate-reverse;
 }
 
 .header {
@@ -42,59 +82,78 @@ body {
 }
 
 .header h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #60a5fa, #c084fc);
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #a78bfa, #f472b6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 0.5rem;
+  letter-spacing: -0.05em;
+  text-shadow: 0 4px 20px rgba(167, 139, 250, 0.2);
 }
 
 .header p {
   color: var(--text-muted);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  font-weight: 300;
+}
+
+/* Glassy elements base class for reuse if needed */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .upload-card {
   background: var(--panel-bg);
-  border: 1px dashed var(--border-color);
-  border-radius: 1rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.5rem;
   padding: 4rem 2rem;
   width: 100%;
   max-width: 600px;
   text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: var(--glass-shadow);
   animation: fadeInUp 0.8s ease-out;
 }
 
 .upload-card:hover {
-  border-color: var(--primary);
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+  background: rgba(30, 41, 59, 0.5);
 }
 
 .upload-icon {
-  font-size: 4rem;
+  font-size: 4.5rem;
   margin-bottom: 1rem;
   display: block;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
 .upload-btn {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), #a855f7);
   color: white;
   border: none;
-  padding: 0.8rem 2rem;
+  padding: 0.8rem 2.5rem;
   border-radius: 2rem;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
+  transition: all 0.3s ease;
   margin-top: 1.5rem;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .upload-btn:hover {
-  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+  background: linear-gradient(135deg, var(--primary-hover), #9333ea);
 }
 
 .upload-btn:active {
@@ -104,11 +163,14 @@ body {
 .editor-container {
   width: 100%;
   height: 85vh;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--glass-shadow);
   animation: zoomIn 0.5s ease-out;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--glass-border);
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 /* Filerobot Customizations */
@@ -135,8 +197,9 @@ body {
 .loading-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(5px);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -171,20 +234,30 @@ body {
 
 .toggle-btn {
   background: var(--panel-bg);
-  border: 1px solid var(--border-color);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
   color: var(--text-muted);
   padding: 0.8rem 1.5rem;
   border-radius: 2rem;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .toggle-btn.active {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), #a855f7);
   color: white;
-  border-color: var(--primary);
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .merge-container {
@@ -226,12 +299,13 @@ body {
   border-radius: 0.5rem;
   background: rgba(255, 255, 255, 0.05);
   padding: 0.5rem;
+  border: 1px solid var(--glass-border);
 }
 
 .remove-btn {
-  background: transparent;
-  color: #ef4444;
-  border: 1px solid #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
   padding: 0.4rem 1rem;
   border-radius: 2rem;
   font-size: 0.8rem;
@@ -242,22 +316,32 @@ body {
 .remove-btn:hover {
   background: #ef4444;
   color: white;
+  border-color: #ef4444;
 }
 
 .select-dropdown {
   background: var(--panel-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--text-main);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--glass-border);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-family: inherit;
   font-size: 0.9rem;
   outline: none;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .select-dropdown:focus {
   border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+}
+
+.select-dropdown option {
+  background: #1e293b;
+  color: white;
 }
 
 /* Mobile Responsiveness */
