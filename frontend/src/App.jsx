@@ -239,7 +239,7 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${isEditorOpen ? 'editor-active' : ''}`}>
       {isPrinting && (
         <div className="loading-overlay">
           <div className="spinner"></div>
@@ -426,6 +426,7 @@ function App() {
             defaultToolId={TOOLS.CROP}
             savingPixelRatio={4}
             previewPixelRatio={window.devicePixelRatio}
+            observePluginContainerSize={true}
             theme={{ typography: { fontFamily: 'Inter, sans-serif' } }}
             translations={{
               save: 'Print Document',

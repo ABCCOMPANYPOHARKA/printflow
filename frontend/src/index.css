@@ -259,3 +259,42 @@ body {
 .select-dropdown:focus {
   border-color: var(--primary);
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1rem;
+  }
+
+  /* When editor is open, remove padding completely for max screen usage */
+  .app-container:has(.editor-container),
+  .app-container.editor-active {
+    padding: 0;
+  }
+
+  .editor-container {
+    height: 100dvh; /* use dynamic viewport height if supported, fallback to 100vh */
+    height: 100vh;
+    width: 100vw;
+    border-radius: 0;
+    border: none;
+  }
+
+  /* Ensure tools inside the Filerobot editor can be scrolled horizontally if they overflow */
+  .FilerobotImageEditor-root * {
+    scrollbar-width: none; /* Firefox */
+  }
+  .FilerobotImageEditor-root *::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  /* Target Filerobot internal elements that might overflow on small screens */
+  .FilerobotImageEditor-root [class*="Tabs-"],
+  .FilerobotImageEditor-root [class*="ToolBar-"],
+  .FilerobotImageEditor-root [class*="Tools-"] {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
