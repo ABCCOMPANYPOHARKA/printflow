@@ -250,8 +250,8 @@ function App() {
 
       {!isEditorOpen ? (
         <div className="header">
-          <h1>PrintFlow Studio</h1>
-          <p>Upload, edit, and print your documents directly to your local printer.</p>
+          <h1>AbcPrintFlow Studio</h1>
+          <p>Easy Way Print Solution By ABC COMPANY POHARKA.</p>
           
           <div style={{ marginTop: '1rem', marginBottom: '2rem' }}>
             <button 
