@@ -68,6 +68,6 @@ app.post('/api/print', upload.single('image'), async (req, res) => {
     }
 });
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Print backend server running at http://0.0.0.0:${port}`);
+app.listen(port, () => {
+    console.log(`Print backend server running at http://localhost:${port} and network IPs`);
 });
