@@ -39,9 +39,8 @@ function App() {
       return 'http://localhost:3001';
     }
     
-    // If hosted on a public domain like Netlify, we can't guess the local backend URL.
-    // Return empty so the user configures it via settings.
-    return '';
+    // If hosted on a public domain like Netlify, return the provided ngrok URL by default
+    return 'https://unturned-extruding-arousal.ngrok-free.dev';
   };
 
   const [apiUrl, setApiUrl] = useState(getDefaultApiUrl);
