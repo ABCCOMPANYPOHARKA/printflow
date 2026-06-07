@@ -9,9 +9,9 @@ function App() {
 
   // New states for Merge Mode
   const [uploadMode, setUploadMode] = useState('single'); // 'single' | 'merge'
-  const [colorMode, setColorMode] = useState('color'); // 'color' | 'bw'
+  const [colorMode, setColorMode] = useState('bw'); // 'color' | 'bw'
   const [printers, setPrinters] = useState([]);
-  const [selectedPrinter, setSelectedPrinter] = useState('default');
+  const [selectedPrinter, setSelectedPrinter] = useState('HP LaserJet M1005');
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
 
@@ -274,7 +274,7 @@ function App() {
                     }
                     setApiUrl(val);
                   }}
-                  style={{ padding: '0.5rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)', background: 'var(--bg-color)', color: 'white', width: '300px' }}
+                  style={{ padding: '0.5rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)', background: 'var(--bg-color)', color: 'var(--text-main)', width: '300px' }}
                 />
                 <button 
                   onClick={testConnection}
@@ -322,6 +322,7 @@ function App() {
                 className="select-dropdown"
               >
                 <option value="default">Default Printer</option>
+                <option value="HP LaserJet M1005">HP LaserJet M1005</option>
                 {printers.map((p, i) => {
                   const name = p?.name || p?.deviceId || (typeof p === 'string' ? p : 'Unknown');
                   const val = p?.deviceId || p?.name || (typeof p === 'string' ? p : 'unknown');
